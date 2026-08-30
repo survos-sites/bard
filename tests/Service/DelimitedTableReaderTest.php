@@ -11,8 +11,13 @@ final class DelimitedTableReaderTest extends TestCase
 {
     public function testReadsMultilineOssRecords(): void
     {
+        $archive = dirname(__DIR__, 2).'/data/oss-textdb.zip';
+        if (!is_file($archive)) {
+            self::markTestSkipped('Run app:download to fetch '.$archive);
+        }
+
         $reader = new DelimitedTableReader();
-        $path = dirname(__DIR__, 2).'/data/oss/Paragraphs.txt';
+        $path = 'zip://'.$archive.'#Paragraphs.txt';
         $rows = $reader->read($path);
         $first = $rows->current();
 

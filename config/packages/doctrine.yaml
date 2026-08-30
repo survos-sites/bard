@@ -1,7 +1,10 @@
 doctrine:
     dbal:
         url: '%env(resolve:DATABASE_URL)%'
-        schema_filter: '~^(?!nglayouts_)(?!_timescaledb_)(?!timescaledb_)(?!toolkit_experimental)~'
+        # bard_scene_vector is owned by symfony/ai-postgres-store, not Doctrine. Without
+        # it here every schema command dies on 'Unknown database type "vector"', and
+        # make:migration would try to DROP the table it can't understand.
+        schema_filter: '~^(?!nglayouts_)(?!_timescaledb_)(?!timescaledb_)(?!toolkit_experimental)(?!bard_scene_vector)~'
 
         # IMPORTANT: You MUST configure your server version,
         # either here or in the DATABASE_URL env var (see .env file)

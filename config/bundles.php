@@ -21,4 +21,6 @@ return [
     Knp\Bundle\MenuBundle\KnpMenuBundle::class => ['all' => true],
     Survos\TablerBundle\SurvosTablerBundle::class => ['all' => true],
     Survos\DeploymentBundle\SurvosDeploymentBundle::class => ['dev' => true, 'test' => true],
+    Survos\FetchBundle\SurvosFetchBundle::class => ['all' => true],
+    Symfony\AI\AiBundle\AiBundle::class => ['all' => true],
 ];

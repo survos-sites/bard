@@ -1,6 +1,6 @@
 # Data license and provenance
 
-The files in `data/oss/` were downloaded from [Open Source Shakespeare](https://www.opensourceshakespeare.org/downloads/).
+The tables read from `data/oss-textdb.zip` were downloaded from [Open Source Shakespeare](https://www.opensourceshakespeare.org/downloads/).
 
 The Shakespeare texts themselves are public domain. Open Source Shakespeare's database, concordance, structure, and related data are licensed under the [Creative Commons Attribution-NonCommercial 4.0 International license](https://creativecommons.org/licenses/by-nc/4.0/).
 

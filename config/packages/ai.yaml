@@ -1,0 +1,16 @@
+# The openai platform itself is declared by the bridge's recipe in
+# ai_open_ai_platform.yaml; this file holds what bard does with it.
+ai:
+    # text-embedding-3-small: 1536 dims, ~$0.02/1M tokens -- the whole 1.4M-token
+    # corpus costs about three cents, so re-embedding is always cheaper than
+    # moving vectors between machines. Changing the model means changing
+    # vector_size in ai_postgres_store.yaml and re-running ai:store:drop/setup.
+    vectorizer:
+        scenes:
+            platform: 'ai.platform.openai'
+            model: 'text-embedding-3-small'
+
+    indexer:
+        scenes:
+            vectorizer: 'ai.vectorizer.scenes'
+            store: 'ai.store.postgres.scenes'

@@ -11,10 +11,9 @@ use App\Entity\Work;
 use App\Enum\Genre;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Console\Attribute\AsCommand;
+use Symfony\Component\Console\Attribute\Option;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Style\SymfonyStyle;
-use Symfony\Component\DependencyInjection\Attribute\Autowire;
-use Symfony\Component\Finder\Finder;
 
 final class AppService
 {
@@ -24,20 +23,24 @@ final class AppService
         private readonly EntityManagerInterface $em,
         private readonly DelimitedTableReader $reader,
         private readonly TokenCounter $tokenCounter,
-        #[Autowire('%kernel.project_dir%/data/oss')] private readonly string $dataDir,
+        private readonly OssArchive $archive,
     ) {}
 
     #[AsCommand('app:load', 'load the Open Source Shakespeare corpus')]
-    public function load(SymfonyStyle $io): int
-    {
-        if (!$this->dataIsAvailable()) {
-            $io->error([
-                'The Open Source Shakespeare source files are not installed.',
-                'Download oss-textdb.zip from https://www.opensourceshakespeare.org/downloads/ and extract the four core tables into data/oss/.',
-            ]);
+    public function load(
+        SymfonyStyle $io,
+        #[Option('truncate and reload even when the corpus is already loaded')] bool $force = false,
+        #[Option('download the source archive again before loading')] bool $refresh = false,
+    ): int {
+        // The zip hasn't changed in years, so a reload is almost always about our
+        // own schema changes -- make wiping a populated database an explicit choice.
+        if (!$force && ($loaded = $this->loadedWorkCount()) > 0) {
+            $io->warning(sprintf('%d works are already loaded; re-run with --force to truncate and reload.', $loaded));
 
-            return Command::FAILURE;
+            return Command::SUCCESS;
         }
+
+        $this->archive->ensure($io, $refresh);
 
         $connection = $this->em->getConnection();
         $connection->executeStatement('TRUNCATE bard_paragraph, bard_chapter, bard_character, bard_work CASCADE');
@@ -173,23 +176,14 @@ final class AppService
         return [$count, array_sum($tokenCounts)];
     }
 
-    private function path(string $filename): string
+    private function loadedWorkCount(): int
     {
-        return $this->dataDir.'/'.$filename;
+        return (int) $this->em->getConnection()->fetchOne('SELECT COUNT(*) FROM bard_work');
     }
 
-    private function dataIsAvailable(): bool
+    private function path(string $filename): string
     {
-        $expected = ['Chapters.txt', 'Characters.txt', 'Paragraphs.txt', 'Works.txt'];
-        $available = [];
-
-        if (is_dir($this->dataDir)) {
-            foreach ((new Finder())->in($this->dataDir)->files()->depth(0)->name('*.txt') as $file) {
-                $available[] = $file->getFilename();
-            }
-        }
-
-        return [] === array_diff($expected, $available);
+        return $this->archive->entry($filename);
     }
 
     private function chapterKey(string $workId, int $section, int $scene): string

@@ -19,5 +19,5 @@
 /assets/vendor/
 ###< symfony/asset-mapper ###
 
-# Open Source Shakespeare corpus (CC BY-NC 4.0); fetch separately.
-/data/oss/
+# Open Source Shakespeare corpus (CC BY-NC 4.0); fetched by app:download.
+/data/
