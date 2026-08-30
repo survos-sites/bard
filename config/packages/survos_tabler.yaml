@@ -1,0 +1,17 @@
+survos_tabler:
+    routes:
+        home: work_index
+    app:
+        code: bard
+        title: Bard
+        description: A structured Shakespeare corpus viewer and search playground.
+        abbr: '<b>Bard</b>'
+        homepage_route: work_index
+        links:
+            github: https://github.com/survos-sites/bard
+            site: https://www.opensourceshakespeare.org/
+        header:
+            auth:
+                enabled: false
+    favicon:
+        text: B

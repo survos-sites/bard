@@ -1,0 +1,31 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}The Works of Shakespeare{% endblock %}
+
+{% block body %}
+    <div class="page-header d-print-none">
+        <div class="container-xl">
+            <h1>The Works of Shakespeare</h1>
+            <p class="text-secondary">A structured edition from Open Source Shakespeare.</p>
+        </div>
+    </div>
+    <div class="page-body">
+        <div class="container-xl">
+            <div class="row row-cards">
+                {% for work in works %}
+                    <div class="col-md-6 col-xl-4">
+                        <div class="card h-100">
+                            <div class="card-body">
+                                <div class="text-secondary text-uppercase small">{{ work.genre.label }} · {{ work.year }}</div>
+                                <h2 class="card-title mt-2"><a href="{{ path('work_show', work.rp) }}">{{ work.title }}</a></h2>
+                                <p class="text-secondary mb-0">{{ work.totalWords|number_format }} words · {{ work.totalParagraphs|number_format }} speeches</p>
+                            </div>
+                        </div>
+                    </div>
+                {% else %}
+                    <div class="col-12"><div class="alert alert-info">Run <code>bin/console app:load</code> to load the corpus.</div></div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+{% endblock %}

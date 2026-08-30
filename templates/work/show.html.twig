@@ -1,0 +1,38 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ work.title }}{% endblock %}
+
+{% block body %}
+    <div class="page-header d-print-none">
+        <div class="container-xl d-flex align-items-center">
+            <div>
+                <div class="text-secondary text-uppercase">{{ work.genre.label }} · {{ work.year }}</div>
+                <h1>{{ work.longTitle }}</h1>
+            </div>
+            <div class="ms-auto">
+                <a class="btn btn-primary" href="{{ path('work_fountain', work.rp) }}">Download Fountain</a>
+            </div>
+        </div>
+    </div>
+    <div class="page-body">
+        <main class="container-xl" style="max-width: 58rem">
+            {% for chapter in work.chapters %}
+                <section class="card mb-4">
+                    <div class="card-header">
+                        <h2 class="card-title">Act {{ chapter.section }}, Scene {{ chapter.scene }} — {{ chapter.description }}</h2>
+                    </div>
+                    <div class="card-body">
+                        {% for paragraph in chapter.paragraphs %}
+                            <div class="mb-3">
+                                {% if paragraph.speakerCode and paragraph.speakerCode|lower != 'xxx' %}
+                                    <strong class="text-primary">{{ paragraph.character.name|default(paragraph.speakerCode) }}</strong>
+                                {% endif %}
+                                <div class="text-body">{{ paragraph.text|replace({'[p]': "\n"})|nl2br }}</div>
+                            </div>
+                        {% endfor %}
+                    </div>
+                </section>
+            {% endfor %}
+        </main>
+    </div>
+{% endblock %}
