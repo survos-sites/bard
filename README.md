@@ -26,7 +26,6 @@ See [DATA_LICENSE.md](DATA_LICENSE.md). The OSS structure and metadata are CC BY
 
 ## Next candidates
 
-- publish normalized tables as a Hugging Face dataset;
-- demonstrate lexical and faceted search through `survos/search-bundle` and `survos/eliastica-bundle`;
-- derive stable chunks for Symfony AI vector-store tests.
-- experiment with work-, scene-, and character-scoped conversational retrieval.
+See [PLAN.md](PLAN.md) — the active piece is **Ask the Scholar**, a question box grounded in
+scene-level embeddings. Also queued: lexical and faceted search through `survos/search-bundle`
+and `survos/eliastica-bundle`, and publishing the normalized tables as a Hugging Face dataset.

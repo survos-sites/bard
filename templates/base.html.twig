@@ -5,3 +5,25 @@
 {% block content %}
     {% block body %}{% endblock %}
 {% endblock %}
+
+{# Attribution is a licence condition, not a courtesy: the OSS database is CC BY-NC 4.0.
+   See DATA_LICENSE.md -- the texts are public domain, the structured data is not. #}
+{% block footer %}
+    <footer class="footer footer-transparent d-print-none">
+        <div class="container-xl">
+            <div class="row text-center align-items-center">
+                <div class="col-12">
+                    <p class="text-secondary mb-1">
+                        Corpus from <a href="https://www.opensourceshakespeare.org/" target="_blank" rel="noopener">Open Source Shakespeare</a>,
+                        by Eric M. Johnson. Structure and metadata licensed
+                        <a href="https://creativecommons.org/licenses/by-nc/4.0/" target="_blank" rel="noopener">CC BY-NC 4.0</a>;
+                        the plays and poems themselves are public domain.
+                    </p>
+                    <p class="text-secondary small mb-0">
+                        Bard is a reading and search playground built on that corpus — not affiliated with Open Source Shakespeare.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </footer>
+{% endblock %}
