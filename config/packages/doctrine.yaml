@@ -6,10 +6,6 @@ doctrine:
         # make:migration would try to DROP the table it can't understand.
         schema_filter: '~^(?!nglayouts_)(?!_timescaledb_)(?!timescaledb_)(?!toolkit_experimental)(?!bard_scene_vector)~'
 
-        # Dokku's linked DATABASE_URL does not include a serverVersion query,
-        # and cache warmup runs before the release can inspect the database.
-        server_version: '18'
-
         profiling_collect_backtrace: '%kernel.debug%'
     orm:
         validate_xml_mapping: true
