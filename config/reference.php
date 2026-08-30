@@ -1608,6 +1608,9 @@ use Symfony\Component\Config\Loader\ParamConfigurator as Param;
  *     route_prefix?: scalar|Param|null, // URL prefix applied to all routes from this bundle. // Default: ""
  *     locale_prefix?: bool|Param, // Prepend {_locale} (constrained to kernel.enabled_locales) to this bundle's route prefix, e.g. /{_locale}/f instead of /f -- for bundles whose routes are meant to be shared/bookmarked, so the URL itself carries the locale instead of a query param. // Default: false
  * }
+ * @psalm-type SurvosDeploymentConfig = array{
+ *     enabled?: bool|Param, // Default: true
+ * }
  * @psalm-type ConfigType = array{
  *     imports?: ImportsConfig,
  *     parameters?: ParametersConfig,
@@ -1647,6 +1650,7 @@ use Symfony\Component\Config\Loader\ParamConfigurator as Param;
  *         survos_field?: SurvosFieldConfig,
  *         knp_menu?: KnpMenuConfig,
  *         survos_tabler?: SurvosTablerConfig,
+ *         survos_deployment?: SurvosDeploymentConfig,
  *     },
  *     "when@prod"?: array{
  *         imports?: ImportsConfig,
@@ -1686,6 +1690,7 @@ use Symfony\Component\Config\Loader\ParamConfigurator as Param;
  *         survos_field?: SurvosFieldConfig,
  *         knp_menu?: KnpMenuConfig,
  *         survos_tabler?: SurvosTablerConfig,
+ *         survos_deployment?: SurvosDeploymentConfig,
  *     },
  *     ...<string, ExtensionType|array{ // extra keys must follow the when@%env% pattern or match an extension alias
  *         imports?: ImportsConfig,

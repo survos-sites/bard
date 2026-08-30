@@ -23,6 +23,7 @@ final class AppService
     public function __construct(
         private readonly EntityManagerInterface $em,
         private readonly DelimitedTableReader $reader,
+        private readonly TokenCounter $tokenCounter,
         #[Autowire('%kernel.project_dir%/data/oss')] private readonly string $dataDir,
     ) {}
 
@@ -44,14 +45,15 @@ final class AppService
         $this->loadWorks();
         $this->loadCharacters();
         $chapterLocations = $this->loadChapters();
-        $paragraphCount = $this->loadParagraphs($chapterLocations, $io);
+        [$paragraphCount, $tokenCount] = $this->loadParagraphs($chapterLocations, $io);
 
         $io->success(sprintf(
-            'Loaded %d works, %d chapters, %d characters, and %d paragraphs.',
+            'Loaded %d works, %d chapters, %d characters, and %d paragraphs (%s cl100k_base tokens).',
             $this->countRows('Works.txt'),
             count($chapterLocations),
             $this->countRows('Characters.txt'),
             $paragraphCount,
+            number_format($tokenCount),
         ));
 
         return Command::SUCCESS;
@@ -115,14 +117,19 @@ final class AppService
         return $locations;
     }
 
-    /** @param array<string, int> $chapterLocations */
-    private function loadParagraphs(array $chapterLocations, SymfonyStyle $io): int
+    /**
+     * @param array<string, int> $chapterLocations
+     *
+     * @return array{int, int} Paragraph and token counts
+     */
+    private function loadParagraphs(array $chapterLocations, SymfonyStyle $io): array
     {
         $characterIds = array_fill_keys(array_map(
             static fn (array $row): string => (string) $row['CharID'],
             iterator_to_array($this->reader->read($this->path('Characters.txt'))),
         ), true);
         $count = 0;
+        $tokenCounts = [];
 
         foreach ($this->reader->read($this->path('Paragraphs.txt')) as $row) {
             $workId = (string) $row['WorkID'];
@@ -134,6 +141,8 @@ final class AppService
             }
 
             $speakerCode = $this->nullable($row['CharID']);
+            $text = $this->cleanText($row['PlainText']) ?? '';
+            $tokenCounts[$workId] = ($tokenCounts[$workId] ?? 0) + $this->tokenCounter->count($text);
             $this->em->persist(new Paragraph(
                 id: (int) $row['ParagraphID'],
                 work: $this->em->getReference(Work::class, $workId),
@@ -141,7 +150,7 @@ final class AppService
                 character: $speakerCode && isset($characterIds[$speakerCode]) ? $this->em->getReference(Character::class, $speakerCode) : null,
                 ordinal: (int) $row['ParagraphNum'],
                 speakerCode: $speakerCode,
-                text: $this->cleanText($row['PlainText']) ?? '',
+                text: $text,
                 type: $this->nullable($row['ParagraphType']),
                 characterCount: (int) $row['CharCount'],
                 wordCount: (int) $row['WordCount'],
@@ -157,7 +166,11 @@ final class AppService
         $this->em->flush();
         $this->em->clear();
 
-        return $count;
+        foreach ($tokenCounts as $workId => $tokenCount) {
+            $this->em->getConnection()->update('bard_work', ['token_count' => $tokenCount], ['id' => $workId]);
+        }
+
+        return [$count, array_sum($tokenCounts)];
     }
 
     private function path(string $filename): string

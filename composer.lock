@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "5e6b3065d3f681845f576c09fa83b3ab",
+    "content-hash": "4cfe34333cc50fecf106e70eb42b9213",
     "packages": [
         {
             "name": "composer/semver",
@@ -8641,6 +8641,60 @@
                 "source": "https://github.com/webmozarts/assert/tree/2.4.1"
             },
             "time": "2026-06-15T15:31:57+00:00"
+        },
+        {
+            "name": "yethee/tiktoken",
+            "version": "1.1.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/yethee/tiktoken-php.git",
+                "reference": "e7ab1881470e4d4f10c27f2d451fb29732e9e3fa"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/yethee/tiktoken-php/zipball/e7ab1881470e4d4f10c27f2d451fb29732e9e3fa",
+                "reference": "e7ab1881470e4d4f10c27f2d451fb29732e9e3fa",
+                "shasum": ""
+            },
+            "require": {
+                "php": "^8.1",
+                "symfony/service-contracts": "^2.5 || ^3.0"
+            },
+            "require-dev": {
+                "doctrine/coding-standard": "^13",
+                "mikey179/vfsstream": "^1.6.11",
+                "phpbench/phpbench": "^1.2",
+                "phpunit/phpunit": "^10.5.45",
+                "psalm/plugin-phpunit": "^0.19.2",
+                "vimeo/psalm": "6.15.1"
+            },
+            "suggest": {
+                "ext-ffi": "To allow use LibEncoder"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Yethee\\Tiktoken\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "description": "PHP version of tiktoken",
+            "keywords": [
+                "bpe",
+                "decode",
+                "encode",
+                "openai",
+                "tiktoken",
+                "tokenizer"
+            ],
+            "support": {
+                "issues": "https://github.com/yethee/tiktoken-php/issues",
+                "source": "https://github.com/yethee/tiktoken-php/tree/1.1.1"
+            },
+            "time": "2026-03-10T19:45:30+00:00"
         }
     ],
     "packages-dev": [
@@ -10511,6 +10565,67 @@
                 }
             ],
             "time": "2024-10-20T05:08:20+00:00"
+        },
+        {
+            "name": "survos/deployment-bundle",
+            "version": "2.26.9",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/survos/deployment-bundle.git",
+                "reference": "e23e150ae059fbb73e584017c204229a971920d1"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/survos/deployment-bundle/zipball/e23e150ae059fbb73e584017c204229a971920d1",
+                "reference": "e23e150ae059fbb73e584017c204229a971920d1",
+                "shasum": ""
+            },
+            "require": {
+                "php": "^8.5",
+                "survos/kit-bundle": "^2.5",
+                "symfony/config": "^8.1",
+                "symfony/console": "^8.1",
+                "symfony/dependency-injection": "^8.1",
+                "symfony/form": "^8.1",
+                "symfony/http-kernel": "^8.1",
+                "symfony/process": "^8.1",
+                "twig/twig": "^3.4|^4.0"
+            },
+            "require-dev": {
+                "phpstan/phpstan": "^2.0",
+                "symfony/browser-kit": "^8.1",
+                "symfony/framework-bundle": "^8.1",
+                "symfony/phpunit-bridge": "^8.1",
+                "symfony/twig-bundle": "^8.1",
+                "symfony/var-dumper": "^8.1"
+            },
+            "type": "symfony-bundle",
+            "autoload": {
+                "psr-4": {
+                    "Survos\\DeploymentBundle\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "description": "Tools for deploying Survos projects to dokku",
+            "keywords": [
+                "dev",
+                "symfony",
+                "symfony-ux"
+            ],
+            "support": {
+                "issues": "https://github.com/survos/deployment-bundle/issues",
+                "source": "https://github.com/survos/deployment-bundle/tree/2.26.9"
+            },
+            "funding": [
+                {
+                    "url": "https://github.com/kbond",
+                    "type": "github"
+                }
+            ],
+            "time": "2026-08-30T11:19:51+00:00"
         },
         {
             "name": "symfony/browser-kit",

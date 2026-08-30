@@ -7,4 +7,5 @@ import './stimulus_bootstrap.js';
  */
 import './styles/app.css';
 
-console.log('This log comes from assets/app.js - welcome to AssetMapper! 🎉');
+import '@tabler/core';
+import '@tabler/core/dist/css/tabler.min.css';

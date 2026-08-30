@@ -19,7 +19,7 @@ final class WorkController extends AbstractController
         return $this->render('work/index.html.twig', ['works' => $works->findForIndex()]);
     }
 
-    #[Route('/works/{workId}', name: 'work_show')]
+    #[Route('/works/{workId}', name: 'work_show', requirements: ['workId' => '[^.]+'])]
     public function show(Work $work, WorkRepository $works): Response
     {
         $work = $works->findWithText($work->id) ?? throw $this->createNotFoundException();

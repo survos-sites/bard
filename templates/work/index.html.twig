@@ -18,7 +18,7 @@
                             <div class="card-body">
                                 <div class="text-secondary text-uppercase small">{{ work.genre.label }} · {{ work.year }}</div>
                                 <h2 class="card-title mt-2"><a href="{{ path('work_show', work.rp) }}">{{ work.title }}</a></h2>
-                                <p class="text-secondary mb-0">{{ work.totalWords|number_format }} words · {{ work.totalParagraphs|number_format }} speeches</p>
+                                <p class="text-secondary mb-0">{{ work.totalWords|number_format }} words · {{ work.totalParagraphs|number_format }} speeches · {{ work.tokenCount|number_format }} tokens</p>
                             </div>
                         </div>
                     </div>

@@ -56,6 +56,9 @@
     "survos/atlas-bundle": {
         "version": "2.10.19"
     },
+    "survos/deployment-bundle": {
+        "version": "2.26.9"
+    },
     "survos/field-bundle": {
         "version": "2.24.37"
     },

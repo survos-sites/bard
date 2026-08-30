@@ -54,6 +54,9 @@ final class Work implements RouteParametersInterface
         #[ORM\Column]
         #[Field(sortable: true)]
         public int $totalParagraphs,
+        #[ORM\Column(options: ['default' => 0])]
+        #[Field(sortable: true)]
+        public int $tokenCount = 0,
     ) {
         $this->chapters = new ArrayCollection();
     }
