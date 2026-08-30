@@ -1,0 +1,49 @@
+{
+    "name": "bard",
+    "description": "Shakespeare corpus viewer and search playground",
+    "keywords": [
+        "php",
+        "symfony",
+        "shakespeare"
+    ],
+    "repository": "https://github.com/survos-sites/bard",
+    "scripts": {
+        "dokku": {
+            "predeploy": "sh -c 'php bin/console importmap:install && php bin/console asset-map:compile && php bin/console doctrine:migrations:migrate --no-interaction --allow-no-migration'",
+            "postdeploy": "php bin/console about"
+        }
+    },
+    "env": {
+        "APP_ENV": {
+            "description": "Symfony environment",
+            "value": "prod"
+        },
+        "APP_DEBUG": {
+            "description": "Symfony debug flag",
+            "value": "0"
+        },
+        "WEB_CONCURRENCY": {
+            "description": "Number of web processes",
+            "value": "2"
+        }
+    },
+    "image": "gliderlabs/herokuish",
+    "buildpacks": [
+        {
+            "url": "https://github.com/heroku/heroku-buildpack-php.git"
+        }
+    ],
+    "healthchecks": {
+        "web": [
+            {
+                "type": "startup",
+                "name": "Symfony health route",
+                "path": "/health",
+                "attempts": 10,
+                "initialDelay": 2,
+                "wait": 2,
+                "timeout": 5
+            }
+        ]
+    }
+}
