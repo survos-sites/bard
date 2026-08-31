@@ -6,11 +6,63 @@ Current and near-term work. Append decision records as work progresses.
 
 Corpus loads itself (`app:load` fetches `oss-textdb.zip` and reads it in place via `zip://`).
 Scene-level vectorization is wired but unrun — `app:vectorize` needs `OPENAI_API_KEY`.
-Next substantive feature: **Ask the Scholar**.
+
+**Ask the Scholar is parked** (2026-08-31). The design below stands; the corpus doesn't.
+See the decision record before picking it back up.
 
 ---
 
-## Active: Ask the Scholar
+## Decision: bard is not the corpus to prove RAG on (2026-08-31)
+
+Shakespeare's vocabulary is the problem, in both directions.
+
+The archaic diction makes a *demo* look great — of 20 modern terms a user would type,
+12 appear literally zero times in all 35,465 speeches (insomnia, suicide, depression,
+racism, therapy, anxiety, "mistaken identity", sleepwalking, misogyny, …), while the
+concepts are plainly present in 1600s wording: Henry IV Pt 2 3.1 for sleeplessness,
+Macbeth 5.1 for guilt, Othello 1.1 for racial othering. Keyword search returns nothing
+for any of them; embeddings would. That gap is real and measured.
+
+But the same corpus is close to useless for *testing*. The model already knows Shakespeare
+from pretraining, so it will answer "Henry IV 3.1" whether or not the retriever returned
+anything. Retrieval success and memorization are indistinguishable, which means recall@k
+measured here says almost nothing about whether the pipeline works. Every green result is
+confounded.
+
+A test corpus has to be one the model cannot have memorized — the museum assets in
+`ssai`/mediary, or any recent private collection. That is also where the real target sits
+(millions of items, not 43 plays).
+
+Bard keeps the vectorization code: it's a working reference implementation of structural
+chunking, and it stays a reasonable *showcase*. It is not the evaluation harness.
+
+## Known bug before any real vectorize run
+
+Scene token counts, `cl100k_base`, measured over all 945 scenes:
+
+```
+min=81  p50=1175  p90=3773  p99=7480  max=24189  mean=1650
+```
+
+940 of 945 fit comfortably in an embedding window — scene really is the right unit. But
+five exceed `text-embedding-3-small`'s 8191-token input limit and **will fail when
+`app:vectorize` runs with a real key**:
+
+| chunk | tokens |
+|---|---|
+| Rape of Lucrece 1.2 | 24,189 |
+| Venus and Adonis 1.1 | 15,984 |
+| Love's Labour's Lost 5.2 | 13,377 |
+| Winter's Tale 4.4 | 12,309 |
+| Hamlet 2.2 | 8,426 |
+
+The two narrative poems aren't scenes at all — a single "chapter" holding the whole poem —
+so they need a different chunk rule (stanza or fixed-window), not just splitting. The three
+long scenes can split on speech boundaries.
+
+---
+
+## Parked design: Ask the Scholar
 
 A question box over the corpus. You ask "where does Shakespeare write about sleeplessness?"
 or "which scenes turn on mistaken identity?" and get an answer grounded in actual scenes,
@@ -141,6 +193,7 @@ embedding of the question plus one chat completion over ~5 retrieved scenes.
 
 ## Backlog
 
+- **Oversized chunks** — the five listed above; blocks any real `app:vectorize` run.
 - **Split the index by form.** Sonnets, poems, comedies, histories, tragedies — the `genre`
   enum already carries this; the index page currently mixes all 43 works in one grid.
   Worth doing regardless of Ask the Scholar, and it gives the retriever a natural filter.

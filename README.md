@@ -26,6 +26,6 @@ See [DATA_LICENSE.md](DATA_LICENSE.md). The OSS structure and metadata are CC BY
 
 ## Next candidates
 
-See [PLAN.md](PLAN.md) — the active piece is **Ask the Scholar**, a question box grounded in
-scene-level embeddings. Also queued: lexical and faceted search through `survos/search-bundle`
+See [PLAN.md](PLAN.md). Ask the Scholar is designed but parked — the corpus is a good showcase
+for semantic search and a poor test of it, since the model already knows Shakespeare. Also queued: lexical and faceted search through `survos/search-bundle`
 and `survos/eliastica-bundle`, and publishing the normalized tables as a Hugging Face dataset.
