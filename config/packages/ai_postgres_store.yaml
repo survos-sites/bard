@@ -8,9 +8,8 @@ ai:
                 dbal_connection: 'doctrine.dbal.default_connection'
                 table_name: 'bard_scene_vector'
                 vector_field: 'embedding'
-                distance: 'cosine'
+                metric: 'cosine'
                 lang: 'english'
-                setup_options:
-                    vector_size: 1536
-                    index_method: 'hnsw'
-                    index_opclass: 'vector_cosine_ops'
+                dimensions: 1536
+                index_method: 'hnsw'
+                index_opclass: 'vector_cosine_ops'

@@ -68,6 +68,9 @@
     "survos/kit-bundle": {
         "version": "2.24.23"
     },
+    "survos/menu-bundle": {
+        "version": "2.42.23"
+    },
     "survos/tabler-bundle": {
         "version": "dev-main"
     },
